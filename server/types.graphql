@@ -11,11 +11,13 @@ type Project @model {
   id: ID! @isUnique
   name: String
   location: String
+  slug: String
   notes: String
   dueDate: DateTime  
   createdAt: DateTime!
   updatedAt: DateTime!
   phases: [Phase!]! @relation(name: "ProjectPhases")
+  template: ProjectTemplate! @relation(name: "ProjectTemplate")
 }
 
 type Phase @model {
@@ -24,6 +26,7 @@ type Phase @model {
   sortOrder: Int
   createdAt: DateTime!
   updatedAt: DateTime!
+  template: PhaseTemplate @relation(name: "PhaseTemplate")
   project: Project! @relation(name: "ProjectPhases")
   steps: [Step!]! @relation(name: "PhaseSteps")
 }
@@ -35,10 +38,17 @@ type Step @model {
   sortOrder: Int
   dueDate: DateTime  
   status: String
+  owners: [Role!]! @relation(name: "StepOwners")
+  template: StepTemplate @relation(name: "StepTemplate")
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
+type Role @model {
+  id: ID! @isUnique
+  name: String
+  steps: [Step!]!  @relation(name: "StepOwners")
+}
 
 type ProjectTemplate @model {
   id: ID! @isUnique
@@ -46,6 +56,7 @@ type ProjectTemplate @model {
   createdAt: DateTime!
   updatedAt: DateTime!
   phases: [PhaseTemplate!]! @relation(name: "ProjectTemplatePhases")
+  projects: [Project!]! @relation(name: "ProjectTemplate")
 }
 
 type PhaseTemplate @model {
@@ -56,6 +67,7 @@ type PhaseTemplate @model {
   updatedAt: DateTime!
   project: ProjectTemplate! @relation(name: "ProjectTemplatePhases")
   steps: [StepTemplate!]! @relation(name: "PhaseTemplateSteps")
+  phases: [Phase!]! @relation(name: "PhaseTemplate")
 }
 
 type StepTemplate @model {
@@ -63,6 +75,7 @@ type StepTemplate @model {
   name: String
   phase: PhaseTemplate!  @relation(name: "PhaseTemplateSteps")
   sortOrder: Int
+  steps: [Step!]! @relation(name: "StepTemplate")
   createdAt: DateTime!
   updatedAt: DateTime!
 }
