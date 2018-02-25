@@ -5,19 +5,64 @@ type User @model {
   id: ID! @isUnique
   name: String
   dateOfBirth: DateTime
+}
 
-  # Uncomment below - you can declare relations between models like this
+type Project @model {
+  id: ID! @isUnique
+  name: String
+  location: String
+  notes: String
+  dueDate: DateTime  
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phases: [Phase!]! @relation(name: "ProjectPhases")
+}
 
-  # posts: [Post!]! @relation(name: "UserPosts")
+type Phase @model {
+  id: ID! @isUnique
+  name: String
+  sortOrder: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  project: Project! @relation(name: "ProjectPhases")
+  steps: [Step!]! @relation(name: "PhaseSteps")
+}
+
+type Step @model {
+  id: ID! @isUnique
+  name: String
+  phase: Phase! @relation(name: "PhaseSteps")
+  sortOrder: Int
+  dueDate: DateTime  
+  status: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 
-# Uncomment the model below as well
+type ProjectTemplate @model {
+  id: ID! @isUnique
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phases: [PhaseTemplate!]! @relation(name: "ProjectTemplatePhases")
+}
 
-# type Post @model {
-#   id: ID! @isUnique
-#   title: String!
-#
-#   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
-#   author: User! @relation(name: "UserPosts")
-# }
+type PhaseTemplate @model {
+  id: ID! @isUnique
+  name: String
+  sortOrder: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  project: ProjectTemplate! @relation(name: "ProjectTemplatePhases")
+  steps: [StepTemplate!]! @relation(name: "PhaseTemplateSteps")
+}
+
+type StepTemplate @model {
+  id: ID! @isUnique
+  name: String
+  phase: PhaseTemplate!  @relation(name: "PhaseTemplateSteps")
+  sortOrder: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

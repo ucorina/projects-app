@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "projects-app-server",
   "version": "1.0.0",
-  "description": "My Graphcool Service"
+  "description": "Graphcool Service for Projects app"
 }
