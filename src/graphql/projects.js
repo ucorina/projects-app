@@ -11,3 +11,17 @@ export const GET_ALL_PROJECTS = gql`
         } 
     }
 `;
+
+export const GET_PROJECT_DETAILS = gql`
+    query ($slug: String) {
+        allProjects(filter: {
+            slug: $slug
+        }) {
+            id 
+            slug
+            name
+            notes
+            dueDate
+        } 
+    }
+`;
